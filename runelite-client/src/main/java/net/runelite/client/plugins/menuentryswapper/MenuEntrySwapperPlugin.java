@@ -450,6 +450,50 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("quick-travel", option, target, true);
 			}
 		}
+		else if (config.swapConstruction() && target.equals("guild trophy space") && option.equals("examine"))
+		{
+			MenuEntry[] entries = client.getMenuEntries();
+			int idx = searchIndex(entries, "build", target, true);
+			if (idx>=0) {
+				for (int i = 0; i < entries.length; i++) {
+					entries[i] = entries[idx];
+				}
+				client.setMenuEntries(entries);
+			}
+		}
+		else if (config.swapConstruction() && target.equals("mythical cape") && option.equals("examine"))
+		{
+			MenuEntry[] entries = client.getMenuEntries();
+			int idx = searchIndex(entries, "remove", target, true);
+			if (idx>=0) {
+				for (int i = 0; i < entries.length; i++) {
+					entries[i] = entries[idx];
+				}
+				client.setMenuEntries(entries);
+			}
+		}
+		else if (config.swapConstruction() && target.equals("table hotspot") && option.equals("examine"))
+		{
+			MenuEntry[] entries = client.getMenuEntries();
+			int idx = searchIndex(entries, "build", target, true);
+			if (idx>=0) {
+				for (int i = 0; i < entries.length; i++) {
+					entries[i] = entries[idx];
+				}
+				client.setMenuEntries(entries);
+			}
+		}
+		else if (config.swapConstruction() && target.equals("mahogany table") && option.equals("examine"))
+		{
+			MenuEntry[] entries = client.getMenuEntries();
+			int idx = searchIndex(entries, "remove", target, true);
+			if (idx>=0) {
+				for (int i = 0; i < entries.length; i++) {
+					entries[i] = entries[idx];
+				}
+				client.setMenuEntries(entries);
+			}
+		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
 			swap("pay-toll(2-ecto)", option, target, true);

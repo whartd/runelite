@@ -103,6 +103,13 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapConstruction",
+		name = "Construction",
+		description = "Swap walk here/build and teleport/remove for guild trophy space/mythical cape."
+	)
+	default boolean swapConstruction() { return true; }
+
+	@ConfigItem(
 		keyName = "swapChase",
 		name = "Chase",
 		description = "Allows to left click your cat to chase"
