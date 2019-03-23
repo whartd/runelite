@@ -35,9 +35,9 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.SetMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.chat.ChatColorType;
@@ -124,28 +124,29 @@ public class ChatNotificationsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSetMessage(SetMessage event)
+	public void onChatMessage(ChatMessage chatMessage)
 	{
-		MessageNode messageNode = event.getMessageNode();
+		MessageNode messageNode = chatMessage.getMessageNode();
+		String nodeValue = Text.removeTags(messageNode.getValue());
 		boolean update = false;
 
-		switch (event.getType())
+		switch (chatMessage.getType())
 		{
 			case TRADE:
-				if (event.getValue().contains("wishes to trade with you.") && config.notifyOnTrade())
+				if (chatMessage.getMessage().contains("wishes to trade with you.") && config.notifyOnTrade())
 				{
-					notifier.notify(event.getValue());
+					notifier.notify(chatMessage.getMessage());
 				}
 				break;
 			case DUEL:
-				if (event.getValue().contains("wishes to duel with you.") && config.notifyOnDuel())
+				if (chatMessage.getMessage().contains("wishes to duel with you.") && config.notifyOnDuel())
 				{
-					notifier.notify(event.getValue());
+					notifier.notify(chatMessage.getMessage());
 				}
 				break;
 			case GAME:
 				// Don't notify for notification messages
-				if (event.getName().equals(runeLiteProperties.getTitle()))
+				if (chatMessage.getName().equals(runeLiteProperties.getTitle()))
 				{
 					return;
 				}
@@ -169,14 +170,14 @@ public class ChatNotificationsPlugin extends Plugin
 
 				if (config.notifyOnOwnName())
 				{
-					sendNotification(event);
+					sendNotification(chatMessage);
 				}
 			}
 		}
 
 		if (highlightMatcher != null)
 		{
-			Matcher matcher = highlightMatcher.matcher(messageNode.getValue());
+			Matcher matcher = highlightMatcher.matcher(nodeValue);
 			boolean found = false;
 			StringBuffer stringBuffer = new StringBuffer();
 
@@ -195,7 +196,7 @@ public class ChatNotificationsPlugin extends Plugin
 
 				if (config.notifyOnHighlight())
 				{
-					sendNotification(event);
+					sendNotification(chatMessage);
 				}
 			}
 		}
@@ -207,7 +208,7 @@ public class ChatNotificationsPlugin extends Plugin
 		}
 	}
 
-	private void sendNotification(SetMessage message)
+	private void sendNotification(ChatMessage message)
 	{
 		String name = Text.removeTags(message.getName());
 		String sender = message.getSender();
@@ -217,12 +218,13 @@ public class ChatNotificationsPlugin extends Plugin
 		{
 			stringBuilder.append('[').append(sender).append("] ");
 		}
+		
 		if (!Strings.isNullOrEmpty(name))
 		{
 			stringBuilder.append(name).append(": ");
 		}
-		stringBuilder.append(message.getValue());
 
+		stringBuilder.append(Text.removeTags(message.getMessage()));
 		String notification = stringBuilder.toString();
 		notifier.notify(notification);
 	}

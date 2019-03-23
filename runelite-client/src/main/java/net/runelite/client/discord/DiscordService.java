@@ -29,6 +29,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.discord.events.DiscordDisconnected;
@@ -55,6 +56,9 @@ public class DiscordService implements AutoCloseable
 	// Hold a reference to the event handlers to prevent the garbage collector from deleting them
 	private final DiscordEventHandlers discordEventHandlers;
 
+	@Getter
+	private DiscordUser currentUser;
+
 	@Inject
 	private DiscordService(
 		final EventBus eventBus,
@@ -74,7 +78,7 @@ public class DiscordService implements AutoCloseable
 			discordRPC = DiscordRPC.INSTANCE;
 			discordEventHandlers = new DiscordEventHandlers();
 		}
-		catch (UnsatisfiedLinkError e)
+		catch (Error e)
 		{
 			log.warn("Failed to load Discord library, Discord support will be disabled.");
 		}
@@ -146,9 +150,12 @@ public class DiscordService implements AutoCloseable
 			? "default"
 			: discordPresence.getLargeImageKey();
 		discordRichPresence.largeImageText = discordPresence.getLargeImageText();
-		discordRichPresence.smallImageKey = Strings.isNullOrEmpty(discordPresence.getSmallImageKey())
-			? "default"
-			: discordPresence.getSmallImageKey();
+
+		if (!Strings.isNullOrEmpty(discordPresence.getSmallImageKey()))
+		{
+			discordRichPresence.smallImageKey = discordPresence.getSmallImageKey();
+		}
+
 		discordRichPresence.smallImageText = discordPresence.getSmallImageText();
 		discordRichPresence.partyId = discordPresence.getPartyId();
 		discordRichPresence.partySize = discordPresence.getPartySize();
@@ -190,6 +197,7 @@ public class DiscordService implements AutoCloseable
 	private void ready(DiscordUser user)
 	{
 		log.info("Discord RPC service is ready with user {}.", user.username);
+		currentUser = user;
 		eventBus.post(new DiscordReady(
 			user.userId,
 			user.username,
@@ -204,6 +212,7 @@ public class DiscordService implements AutoCloseable
 
 	private void errored(int errorCode, String message)
 	{
+		log.warn("Discord error: {} - {}", errorCode, message);
 		eventBus.post(new DiscordErrored(errorCode, message));
 	}
 

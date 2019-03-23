@@ -97,7 +97,7 @@ public class ChatController
 	}
 
 	@GetMapping("/qp")
-	public int getKc(@RequestParam String name)
+	public int getQp(@RequestParam String name)
 	{
 		Integer kc = chatService.getQp(name);
 		if (kc == null)
@@ -132,5 +132,27 @@ public class ChatController
 	public Task getTask(@RequestParam String name)
 	{
 		return chatService.getTask(name);
+	}
+
+	@PostMapping("/pb")
+	public void submitPb(@RequestParam String name, @RequestParam String boss, @RequestParam int pb)
+	{
+		if (pb < 0)
+		{
+			return;
+		}
+
+		chatService.setPb(name, boss, pb);
+	}
+
+	@GetMapping("/pb")
+	public int getPb(@RequestParam String name, @RequestParam String boss)
+	{
+		Integer pb = chatService.getPb(name, boss);
+		if (pb == null)
+		{
+			throw new NotFoundException();
+		}
+		return pb;
 	}
 }

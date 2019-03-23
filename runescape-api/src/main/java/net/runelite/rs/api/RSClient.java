@@ -307,6 +307,9 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("menuActionParams1")
 	int[] getMenuActionParams1();
 
+	@Import("menuForceLeftClick")
+	boolean[] getMenuForceLeftClick();
+
 	@Import("worldList")
 	@Override
 	RSWorld[] getWorldList();
@@ -782,6 +785,10 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	RSNodeCache getWidgetSpriteCache();
 
+	@Import("items")
+	@Override
+	RSNodeCache getItemCompositionCache();
+
 	@Import("oculusOrbState")
 	@Override
 	int getOculusOrbState();
@@ -918,4 +925,11 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("endY")
 	int getEndY();
+
+	@Import("spellSelected")
+	@Override
+	void setSpellSelected(boolean selected);
+
+	@Import("getEnum")
+	RSEnum getRsEnum(int id);
 }

@@ -60,7 +60,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.SetMessage;
 import net.runelite.api.vars.SlayerUnlock;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -372,7 +371,15 @@ public class SlayerPlugin extends Plugin
 				Matcher mPoints = REWARD_POINTS.matcher(w.getText());
 				if (mPoints.find())
 				{
+					final int prevPoints = points;
 					points = Integer.parseInt(mPoints.group(1).replaceAll(",", ""));
+
+					if (prevPoints != points)
+					{
+						removeCounter();
+						addCounter();
+					}
+
 					break;
 				}
 			}
@@ -573,7 +580,7 @@ public class SlayerPlugin extends Plugin
 
 		// add and update counter, set timer
 		addCounter();
-		counter.setText(String.valueOf(amount));
+		counter.setCount(amount);
 		infoTimer = Instant.now();
 	}
 
@@ -716,14 +723,14 @@ public class SlayerPlugin extends Plugin
 		counter = null;
 	}
 
-	void taskLookup(SetMessage setMessage, String message)
+	void taskLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.taskCommand())
 		{
 			return;
 		}
 
-		ChatMessageType type = setMessage.getType();
+		ChatMessageType type = chatMessage.getType();
 
 		final String player;
 		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
@@ -732,7 +739,7 @@ public class SlayerPlugin extends Plugin
 		}
 		else
 		{
-			player = Text.removeTags(setMessage.getName())
+			player = Text.removeTags(chatMessage.getName())
 				.replace('\u00A0', ' ');
 		}
 
@@ -779,7 +786,7 @@ public class SlayerPlugin extends Plugin
 			.append(sb.toString())
 			.build();
 
-		final MessageNode messageNode = setMessage.getMessageNode();
+		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
 		chatMessageManager.update(messageNode);
 		client.refreshChat();

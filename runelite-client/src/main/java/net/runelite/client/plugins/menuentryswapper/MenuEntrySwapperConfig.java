@@ -93,6 +93,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapContract",
+		name = "Contract",
+		description = "Swap Talk-to with Contract on Guildmaster Jane"
+	)
+	default boolean swapContract()
+	{
+		return true; 
+	}
+
+	@ConfigItem(
 		keyName = "swapChase",
 		name = "Chase",
 		description = "Allows to left click your cat to chase"
@@ -195,9 +205,19 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapPrivate",
 		name = "Private",
-		description = "Swap Shared with Private on the Chamber of Xeric storage units."
+		description = "Swap Shared with Private on the Chambers of Xeric storage units."
 	)
 	default boolean swapPrivate()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapPick",
+		name = "Pick",
+		description = "Swap Pick with Pick-lots of the Gourd tree in the Chambers of Xeric"
+	)
+	default boolean swapPick()
 	{
 		return false;
 	}
