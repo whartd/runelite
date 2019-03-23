@@ -350,6 +350,7 @@ public class WidgetID
 		static final int ROOT_INTERFACE_CONTAINER = 62;
 		static final int BANK_CONTAINER = 64;
 		static final int INTERFACE_CONTAINER = 65;
+		static final int INVENTORY_CONTAINER = 69;
 	}
 
 	static class ResizableViewport
@@ -383,6 +384,7 @@ public class WidgetID
 		static final int PRAYER_ICON = 63;
 		static final int MAGIC_ICON = 64;
 		static final int INTERFACE_CONTAINER = 65;
+		static final int INVENTORY_CONTAINER = 71;
 	}
 
 	static class ResizableViewportBottomLine
@@ -415,6 +417,7 @@ public class WidgetID
 		static final int MUSIC_TAB = 40;
 		static final int MUSIC_ICON = 46;
 		static final int MAGIC_ICON = 63;
+		static final int INVENTORY_CONTAINER = 71;
 	}
 
 	static class Chatbox
@@ -689,7 +692,7 @@ public class WidgetID
 
 	static class Minigames
 	{
-		static final int TELEPORT_BUTTON = 31;
+		static final int TELEPORT_BUTTON = 26;
 	}
 
 	static class StandardSpellBook
@@ -714,16 +717,11 @@ public class WidgetID
 
 	static class Pvp
 	{
-		static final int BOUNTY_HUNTER_INFO = 6;
-		static final int KILLDEATH_RATIO = 9;
-		static final int BOUNTY_HUNTER_STATS = 28;
-		static final int PVP_WIDGET_CONTAINER = 54;
-		static final int SKULL_CONTAINER = 55;
-		static final int SKULL = 56;
-		static final int SAFE_ZONE = 57;
-		static final int ATTACK_RANGE = 59;
-		static final int WILDERNESS_LEVEL = 60; // this can also be the Deadman Mode "Protection" text
-		static final int DEADMAN_PROTECTION_TIME = 61;
+		static final int BOUNTY_HUNTER_INFO = 19;
+		static final int KILLDEATH_RATIO = 15;
+		static final int SKULL_CONTAINER = 62;
+		static final int SAFE_ZONE = 64;
+		static final int WILDERNESS_LEVEL = 67; // this can also be the Deadman Mode "Protection" text
 	}
 
 	static class KourendFavour
@@ -753,8 +751,8 @@ public class WidgetID
 
 	static class QuestList
 	{
-		static final int FREE_CONTAINER = 9;
-		static final int MEMBERS_CONTAINER = 10;
-		static final int MINIQUEST_CONTAINER = 11;
+		static final int FREE_CONTAINER = 6;
+		static final int MEMBERS_CONTAINER = 7;
+		static final int MINIQUEST_CONTAINER = 8;
 	}
 }
